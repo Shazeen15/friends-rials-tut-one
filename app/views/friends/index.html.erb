@@ -1,28 +1,33 @@
 <h1>Friends</h1>
 
-<table class="table table-striped table-bordered table-hover">
-  <thead class="thead-dark">
-    <tr>
-      <th scope="col">First Name</th>
-      <th scope="col">Last Name</th>
-      <th scope="col">Email</th>
-      <th scope="col">Twitter</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-  <tbody>
+<%if user_signed_in?%>
+  <table class="table table-striped table-bordered table-hover">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Email</th>
+        <th scope="col">Twitter</th>
+        <th scope="col">User Id</th>
+      </tr>
+    </thead>
+    <tbody>
 
-  <% @friends.each do |friend| %>
-    <tr>
-      <th scope="row"><%= friend.first_name%></th>
-      <td><%= friend.last_name%></td>
-      <td><%= friend.email%></td>
-      <td><%= friend.twitter%></td>
-      <td><%= link_to "Show this friend", friend %></td>
-    </tr>
-  <% end %>
+    <% @friends.each do |friend| %>
+    <% if current_user == friend.user%>
+      <tr>
+        <td>
+        <%= link_to friend.first_name + " " + friend.last_name, friend %>
+        </td>
+        <td><%= friend.email%></td>
+        <td><%= friend.twitter%></td>
+        <td><%= friend.user_id%></td>
+      </tr>
+      <%end%>
+    <% end %>
 
-  </tbody>
-</table>
-
-<%= link_to "New friend", new_friend_path, class:"btn btn-secondary" %>
+    </tbody>
+  </table>
+  <%= link_to "New friend", new_friend_path, class:"btn btn-secondary" %>
+<%else%>  
+  <p>there are no friends in the data base.</p>
+<%end%>
